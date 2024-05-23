@@ -10,3 +10,7 @@ gap: 8px;
     background-color: #eee;
     text-align: center;
 }
+
+.blank {
+    display:none;
+}
