@@ -8,9 +8,8 @@ item: itemProps
 onCardClickHandler: (item:itemProps)=> void;
 }
 const Card = ({item, onCardClickHandler}:CardProps) => {
-console.log("Rerenderig", item.value===2 && item);
   if(item.isRemoved){
-    return <div>R</div>;
+    return <div></div>;
 }
 
  return <div className={item.isRemoved ? 'blank': 'child'} onClick={()=> onCardClickHandler(item)}>{item.isOpen && item.value}</div>
@@ -39,43 +38,50 @@ const GameBoard = () => {
         updateGameStatus(newStatus);
     }
     const isMatch = ()=> {
-        if (matches[0] === matches[1]){
+        if (matches[0].value === matches[1].value){
             return true
         }
         return false;
     }
     const getUpdatedStatus = () => {
         let newStatus;
-        if (isMatch()){
-             newStatus = [...gameStatus].map((item) => item.value === matches[0].value ? {...item, isRemoved:true}: item);
-        } else{
+            //  newStatus = [...gameStatus].map((item) => item.value === matches[0].value ? {...item, isRemoved:true}: item);
+    
             newStatus = [...gameStatus].map((item) => {
-              let nItem = {...item};
-              matches.forEach((match) => {
-                if(item.id=== match.id) {
-                    nItem= {...item, isOpen:false}
+                if(isMatch()){
+                   return item.value === matches[0].value ? {...item, isRemoved:true}: item
+                }else{
+                    let nItem = {...item};
+                    matches.forEach((match) => {
+                      if(item.id=== match.id) {
+                          nItem= {...item, isOpen:false}
+                      }
+                    }
+                    )  
+                    return nItem;
                 }
-              }
-              )  
-              return nItem;
 
             });
-        }
-        return newStatus;
+    
+       return newStatus;
     }
     useEffect(()=>{
+        let timerId: number;
         if(matches.length ===2) {
-            setTimeout(()=>{
+           timerId= setTimeout(()=>{
                 updateGameStatus(getUpdatedStatus());
                 setMatches([]);
             },3000)        }
+            return ()=>{
+                clearTimeout(timerId);
+            }
        
-    },[gameStatus])
+    },[gameStatus, matches])
     return <div>
     <h1>Memory Game</h1>
     <div className="parent">
         {gameStatus.map((item, index) => {
-            return  item && <Card item={item} onCardClickHandler={onCardClickHandler} key={index}></Card>
+            return <Card item={item} onCardClickHandler={onCardClickHandler} key={index}></Card>
         })}
        
     </div>
