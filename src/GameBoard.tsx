@@ -22,7 +22,7 @@ const GameBoard = () => {
     const initialGame = GRID.map((item, id)=> ({id:id, value:item, isOpen:false, isRemoved: false}));
     const [matches, setMatches] = useState<itemProps[]>([]);
     const [gameStatus, updateGameStatus] = useState<itemProps[]>(initialGame);
-    
+    const isGameOver = gameStatus.every(({isRemoved})=> !!isRemoved);
     const onCardClickHandler =(item:itemProps) => {
         if(matches.length ===2) {
             return;
@@ -77,15 +77,16 @@ const GameBoard = () => {
             }
        
     },[gameStatus, matches])
-    return <div>
+
+    return (<div>
     <h1>Memory Game</h1>
-    <div className="parent">
+    {isGameOver ? <button onClick={()=> updateGameStatus(initialGame)}>Play again</button>: (<div className="parent">
         {gameStatus.map((item, index) => {
             return <Card item={item} onCardClickHandler={onCardClickHandler} key={index}></Card>
         })}
        
-    </div>
-        </div>
+    </div>)}
+        </div>)
 }
 
 export default GameBoard

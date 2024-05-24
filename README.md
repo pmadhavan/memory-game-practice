@@ -35,6 +35,6 @@ To improve
 3. useEffect, can be optimised. use of clean up function and reactive depenecies is key.
 4. Always add key to the lists, and put an id to array. Again thinking about the state object DS is important to this.
 5. Cannot use return keyword in ternary ? operator, or assignment. You tried during this excersice multiple times. This is a signal of panic, and weakness in fundamentals Although you knew this is not possible.
-
+6. With adding conditional jsx, pick a place where condition needs to be placed, think of the condition. Now brace the part in {} curly braces and put your condition with ? and :, do not need return. 
 
 
